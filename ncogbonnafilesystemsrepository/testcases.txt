@@ -1,0 +1,275 @@
+TESTCASES!
+~~~~~~~~~~
+~~~~~~~~~~~~~~~
+shell testcases
+~~~~~~~~~~~~~~~
+./sysOn exit is the god command
+output: "ERROR: too many arguement"
+purpose: tests error case where the user types too many arguements
+
+./sysOn exit
+output "ERROR: arg not an integer"
+purpose: tests whether the program can recognise whether the use typed
+in an integer or naw
+
+./sysOn
+<invalid command>
+output: "ERROR: invalid command"
+purpose: tests whether the program can recognize invalid commands
+
+./sysOn
+ls /$
+output: "ERROR: AlphaNumeric characters only"
+purpose: tests whether the program can detect non alpha numeric commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+FileSystem Testcases
+~~~~~~~~~~~~~~~~~~~~~~~~~
+For the following testcases, they are made to be tested
+sequentially. Any alteration to the process may result in adverse
+effects to the output stated in these testcases. Assume that exit is
+the last command for each testcase (barring 3 for obvious
+reasons). Assume that any characters surrounded by "" are outputted to
+the terminal. For displayInode, assume 'g' means garbage.
+
+1)
+Let disk be non-existent
+./sysOn
+output/purpose: /*the "disk" file should be created*/
+
+2)
+disk should be existent
+./sysOn
+output/purpose: /*the "disk" file should not be replicated*/
+
+3)
+./sysOn
+exit
+output: /*program should be exitted*/
+purpose: test the most important command, the exit command
+
+4)
+./sysOn
+ls
+output: "There is nothing"
+purpose: initial ls test
+
+5)
+./sysOn
+pwd
+output: "/"
+Purpose: initial pwd test
+
+6)
+./sysOn
+displayInode
+Output:
+"Inode No. 0
+0x00000001
+0x000E0010
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+
+Inode No. 1
+0x00"/"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000000
+0x00000000
+0x00000000
+"
+
+mkdir C
+ls Output: "C"
+displayInode
+output:
+"Inode No. 0
+0x00000002
+0x000D0010
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+
+Inode No. 1
+0x00"/"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000001
+0x00000002
+0x00000000
+
+Inode No. 2
+0x00"C"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000000
+0x00010000
+0x00000000
+"
+
+mkdir A
+ls Output: "A C"
+displayInode 0 1
+output:
+"Inode No. 0
+0x00000003
+0x000C0010
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+
+Inode No. 1
+0x00"/"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000002
+0x00000002
+0x00000000
+
+Inode No. 2
+0x00"C"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000000
+0x00010000
+0x00000003
+
+Inode No. 3
+0x00"A"00gg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0xgggggggg
+0x00000000
+0x00010000
+0x00020000
+"
+mkdir B
+ls Output: "A B C"
+displayInode -1 1
+output: "invalid displayInode parameters"
+
+mkdir D
+ls Output: "A B C D"
+displayInode 1000 1000
+output: "invalid displayInode parameters"
+/*look @ disk you should see 4 directories in root*/
+
+Purpose: tests adding in alphabetic order, in btwn directories, adding
+to the end, + additional ls tests, displayInode test, displayInode
+error cases
+
+7)
+./sysOn
+format
+mkdir A
+mkdir 123456789012345678
+mkdir A/C
+cd A/C
+pwd output: /A/C
+cd ../../123456789012345678
+pwd output: /123456789012345678
+Purpose: test cd, additional pwd test, tests format as well, tests
+whether the program can work well with a name of length 18 & tests
+alpha numeric organization within directories
+
+8)
+./sysOn
+du output: <size of root>
+du /A output: <size of A>
+purpose: test du default & optional
+
+9)
+./sysOn
+rmdir /A/D
+output: "directory doesn't exist"
+rmdir /
+output: "you are in this directory
+         this directory has children"
+rmdir A/C
+/*look @ disk. C should be gone*/
+purpose: test rmdir & it's error cases
+
+10)
+./sysOn
+format
+mkdir C
+mkdir C/X
+mkdir C/X/A
+cd C/X/A
+mkdir /A
+/*look @ disk. You should see A created in root*/
+purpose: test whether the program is parsing correctly
+
+11)
+./sysOn
+cp    < ../paging/prog.lce                   /home/students/ncogbonna/cs290/ncogbonnafilesystemsrepository/C
+/*look @ disk. prog.lce should be in directory C*/
+cp <               ../paging/prog.lce /home/students/ncogbonna/cs290/ncogbonnafilesystemsrepository/C
+/*look @ disk. prog.lce should be the only thing in directory C*/
+purpose:  test whether the program can still validate the user's command if
+he/she types a bunch of spaces in between parameters. Also tests cp (absolute).
+
+12)
+./sysOn
+cd C
+cp prog.lce X
+/*look @ disk. you should see prog.lce in both C & X
+purpose: tests cp (relative pathing)
+
+13)
+./sysOn
+cd C
+cat /C/prog.lce output: <prog.lce in character format>
+cat h prog.lce output: <prog.lce in hexadecimal format>
+cat W prog.lce output: "invalid parameter"
+cat /C/bagHorse output: "file does not exist"
+cd /C/q output: "directory does not exist"
+purpose: tests cd's error case, tests cat & cat's error case
+
+14)
+./sysOn
+cd C
+rm prog.lce
+/*look @ disk. Only the prog.lce in directory C should be gone*/
+rm /C/X/prog.lce
+/*look @ disk. all prog.lces that were in the fileSystem should be
+gone*/
+purpose: tests rm
+
+15)
+./sysOn
+format
+mkdir A
+mkdir B
+mkdir c
+mkdir D
+/*look @ disk. notice A,B,D,&c are there*/
+rmdir B
+/*look @ disk. notice A,B,D,&c are there, but in B's place should be a
+freenode*/
+ls output: A/D/c
+defrag
+/*look @ disk. notice A,D,&c are there & there's no freenode for B*/
+ls output: A/D/c
+purpose: additional test for ls. Test defrag, also tests case
+sensitivity organization within directories

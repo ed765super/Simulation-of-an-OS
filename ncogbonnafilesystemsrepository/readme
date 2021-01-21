@@ -1,0 +1,91 @@
+1) there can be one optional command line argument, an integer
+FileSysSize > 0.
+
+2) If there is no command line argument, the default value for
+FileSysSize should be 16. 
+
+3) the maximum length of a file or directory name is 18
+characters.
+
+3.5) the root directory will always be named "/"
+
+4) file and directory names are case-sensitive and are made up of
+alpha-numeric characters & the '.' character only.
+
+Note: for assumption #5 any and all parameters surrounded by '[]' are
+optional.
+5) valid cmds must be lowercase. the following are valid: format,
+defrag, pwd, ls [< path to directory >], cd [< path to directory >],
+mkdir < path to directory >, rm < path to file > , rmdir < path to
+directory >, cp ['>' | '<'] < path to a file > < path to a file or
+directory >, cat [h] < path to a file >, displayInode [< n > < m >],
+du [< path to directory >], & exit
+
+6) path stands for an absolute path or a relative path. If the path
+begins with "/", then it is an absolute path. If the specified path is
+not a valid directory, then a suitable error message should be
+displayed. Use ".." to denote the parent directory and "." to denote the present
+directory. "/" will be used to separate names in a path.
+
+7) For ls, If no parameter is given, it is assumed that you want the
+contents of the present working directory to be listed. If the
+specified path is not a valid directory, then it is assumed that you
+want a suitable error message to be displayed on the terminal. 
+
+8) For cd, If no parameter is given, it is assumed that you want to
+change the present working directory to the root directory. If the
+specified path is not a valid directory, then it is assumed that you
+want a suitable error message to be displayed on the terminal.
+
+9) For mkdir If any intermediate directory within the path of the parameter for
+mkdir does not exist, then it is assumed that you
+want a suitable error message to be displayed on the terminal.
+
+10) For rm, If the path you type ends in the character '*', then it is
+assumed that you want all the files in the directory at the end of the
+path to be removed. Note that '*' must only be at the end of the path
+specification.
+
+11) For cp, The file specified (as an absolute or relative path) by
+the first parameter is the source and the file specified (as an
+absolute or relative path) by the second parameter is the destination.
+
+11.25) If the second parameter is a path to a directory, then it is
+assumed that you want the file  copied as a file retaining the file
+name to the directory specified in the second parameter.
+
+11.50) If the destination is a filename for a file that exists, then
+it is assumed that you want the file to be overwritten. 
+
+11.75) If the specified path is not valid, then it is assumed that you
+want a suitable error message to be displayed on the terminal.
+
+11.8) If the optional parameter is the character '<', then it is
+assumed that you want the source to be treated as a path in the Linux
+file system, and the destination as a path in the simulated file
+system.
+
+11.85) If the optional parameter is the character '>', then it is
+assumed that you want the source to be treated as a path in the simulated
+file system, and the destination as a path in the Linux file system.
+
+11.98) If neither '<' or '>' is typed, it is assumed you want both
+source and destination to be treated as paths in the simulated
+file system.
+
+12) for displayInode, the optional parameters n & m must be integers. If no
+parameters are given it is assumed you want all the
+inodes to be displayed.
+
+13) For du, If no parameter is given it is assumed you want the size
+of the present working directory to be printed.
+
+FUNCTIONALLITY:
+I have a file called testSetData that proves that i am masking the hexadecimals
+and shifting them correctly.
+
+exit & displayInode works.
+
+the program writes the first line of a node correctly.
+
+the program writes to the disk in correct form.
