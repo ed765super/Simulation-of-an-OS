@@ -1,0 +1,44 @@
+For the following:
+memory 200
+stacksize 50
+fitType 0
+
+TC0
+Let timeSlice be 500
+load prog2
+load prog0
+load prog0
+step 1
+jobs
+output:
+<PCB prog0>
+<PCB prog0>
+Purpose: tests what the program does when a process halts during a
+timeslice. And proves that our program doesnt run the next process
+once a program has finished during a timeSlice. Also tests whether the
+program round robins a finished program
+
+TC1
+Let timeSlice be 2
+load prog2
+load prog0
+load prog0
+step 1
+jobs
+output:
+<PCB prog0>
+<PCB prog0>
+<PCB prog2>
+Purpose: tests what the program does when a process doesnt halt during
+a timeslice. also proves that round robin works.
+
+TC2
+Let timeSlice be 2
+load prog0
+load prog1
+step 1
+step 1
+cpu
+step 1
+cpu
+Purpose: tests whether context switching works.
