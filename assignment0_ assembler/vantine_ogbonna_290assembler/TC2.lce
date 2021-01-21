@@ -1,0 +1,4 @@
+IN $a0
+IN $a1
+BEQ $a0 $a0 jump
+HALT

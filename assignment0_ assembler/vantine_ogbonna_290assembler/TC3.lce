@@ -1,0 +1,23 @@
+VAR memory 10
+ADDI $t1 $t0 10 ; set $r1 to 10 in order to iterate 10 times
+LA $t2 memory ; get address of memory block
+take_input: IN $a0 ; take int from user to store
+SW $a0 0x0($t2)
+ADDI $t2 $t2 8 
+ADDI $t1 $t1 -1
+BGT $t1 $t0 take_input
+ADDI $t1 $t0 9 
+LA $t2 memory 
+ADDI $a0 $t2 8
+sort: LW $a1 0x0($t2)
+LW $a2 0x0($a0)
+BGT $a2 $a1 y_greater
+SW $a1 0x0($a0)
+SW $a2 0x0($t2)
+y_greater: ADDI $t2 $t2 8 
+ADDI $a0 $a0 8
+ADDI $t1 $t1 -1
+BEQ $t1 $t0 done
+BEQ $t0 $t0 sort
+done: NAND $v0 $zero $zero
+HALT

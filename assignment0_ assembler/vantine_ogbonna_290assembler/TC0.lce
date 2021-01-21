@@ -1,0 +1,4 @@
+IN $t0
+IN $t1
+$t1 $t1
+HALT

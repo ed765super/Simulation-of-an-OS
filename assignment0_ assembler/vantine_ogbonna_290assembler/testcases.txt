@@ -1,0 +1,106 @@
+===================================================
+ASSEMBLER TEST CASES
+===================================================
+
+TC0:
+
+ in $t0
+ in $t1
+ $t1 $t1
+ HALT
+
+ Output: Pass 1 error
+
+ TC0 Purpose: Does assembler detect invalid opcode
+
+===================================================
+
+TC1:
+
+ ADD $t0 p0 $t0
+ HALT
+
+ output: Pass 1 error
+
+ TC1 Purpose: Does assembler detect invalid register
+
+===================================================
+
+TC2:
+
+ in $a0
+ in $a1
+ BEQ $a0 $a0 jump
+ HALT
+
+ output: Pass 1 error 
+
+ TC2 Purpose: Does assembler detect a reference to a
+ label that does not exist
+
+===================================================
+
+TC3:
+
+var memory 10
+addi $r1 $r0 10 ; set $r1 to 10 in order to iterate 10 times
+la $r2 memory ; get address of memory block
+take_input: in $r3 ; take int from user to store
+sw $r3 0x0($r2) ; store user input at current word in memory
+addi $r2 $r2 8 ; select next word in memory
+addi $r1 $r1 -1 ; decrement loop iterator
+bgt $r1 $r0 take_input ; if iterator greater than 0, repeat loop
+addi $r1 $r0 9 ; set $r1 to 9 need n-1 comparisons to sort list of size n
+la $r2 memory ; load first pointer with address of memory block
+addi $r3 $r2 8 ; load second pointer with second address of memory block
+sort: lw $r4 0x0($r2) ; get int at current index of memory, say x
+lw $r5 0x0($r3) ; get int at next index of memory, say y
+bgt $r5 $r4 y_greater ; y is greater, no swap needed
+sw $r4 0x0($r3) ; place in x in y's position
+sw $r5 0x0($r2) ; place y in x's previous position
+y_greater: addi $r2 $r2 8 ; update first pointer to next index
+addi $r3 $r3 8 ; update second pointer to next index
+addi $r1 $r1 -1 ; decrement iterator
+beq $r1 $r0 done ; traversed the extent of memory
+beq $r0 $r0 sort ; else, compare next two indices of memory
+done: halt
+ 
+ output:
+2600000A
+C700004C
+98000000
+48700000
+27700008
+266FFFFF
+DABFFFEC
+26000009
+C7000030
+28700008
+39700000
+3A800000
+DA900008
+49800000
+4A700000
+27700008
+28800008
+266FFFFF
+56000004
+500FFFD8
+70000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+
+ TC3 Purpose: 
+     Does pass 1 ignore comments?
+     Does pass 1 generate symbol table correctly (with labels and vars)?
+     Does pass 2 translate opcodes and operands correctly? 
+     Does pass 2 handle calculating offsets?
+     Does pass 2 handle var pseudo instruction? 
