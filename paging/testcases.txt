@@ -1,0 +1,136 @@
+for the following testcases, the config file will look like such
+unless directed otherwise:
+memory = 8 //memory gets 8 pages of memory
+pagesize = 4 //each page is size four
+timeslice = 4 // execute 4 instructions before robin/popping
+stack = 1 //1 page of stack space
+swapspace = 1 //1 page of swap space
+paging = 0 //FIFO
+fitType = 0 //FirstFit
+
+TC0
+./simulate
+load prog3
+step 33//or some number greater than the (number of instructions)
+                                        /(num of timeslices)
+output:
+The program has halted
+PID: 1
+number of timeslices: 8(number of instructions/timeslices)
+# of page faults: 13
+Purpose: tests whether the FIFO works
+
+TC1
+./simulate
+load prog4
+step 33//or some number greater than the (number of instructions)
+                                        /(num of timeslices)
+output: <out of memory>
+<suitable error message>
+PID: 1
+number of timeslices: 8(number of instructions/timeslices)
+# of page faults: 13
+Purpose: Testing whether the program can notice there is no more space
+in memory
+
+TC1.5
+in config{
+memory 2
+swapspace 2
+timeslice 6
+pagesize 3
+}
+./simulate
+load prog6
+step 5
+pages
+output:
+phys frame table:
+<0,0>
+<0,1>
+swap frame table:
+<0,0>
+<0,1>
+Purpose: all pages phys&swap are full but the next one coming in is on swap.
+
+TC1.5
+in config{
+memory 2
+swapspace 2
+timeslice 2
+pagesize 3
+}
+./simulate
+load prog6
+step 1
+pages
+output:
+phys frame table:
+<0,0>
+<0,1>
+swap frame table:
+
+Purpose: Test case where swa space doesnt get used at all
+
+TC2
+in config{
+paging = 1
+}
+./simulate
+load prog5
+step 33//or some number greater than the (number of instructions)
+                                        /(num of timeslices)
+output:
+The program has halted
+PID: 1
+number of timeslices: 8(number of instructions/timeslices)
+# of page faults: 11
+Purpose: test whether LRU is functioning properly
+
+TC2
+./simulate
+load prog0
+pages
+load prog0
+pages 2
+
+output:
+<1,0>
+<2,[place in memory 2 is]>
+
+TC3
+./simulate
+load prog3
+jobs
+step 1
+jobs
+
+output:
+1
+prog3
+waiting
+0
+0
+
+1
+prog3
+running
+4
+1
+
+TC4
+in config{
+pagesize 38//1 more than the numer of instructions
+}
+./simulate
+load prog7
+freemem
+step 11
+freemem
+
+output:
+freeBlocks: start: <progSize+50> end: 88
+freeBlocks: start: <progSize+50+3> end: 88
+
+Purpose: proves the stacks grows & shrinks as you add & remove words
+from the stack

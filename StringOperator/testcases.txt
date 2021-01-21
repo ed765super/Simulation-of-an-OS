@@ -1,0 +1,77 @@
+TESTCASES!|
+~~~~~~~~~~|
+
+Name: test1
+Purpose: test the programs ability to deal with an IS containing only
+alphabetic characters. None of which are the fixed string.
+IS contains: billy
+	     APPLE
+Expect: oneString: billy
+	twoString: APPLE
+	Three String = billyAPPLE
+	Upper case oneString = BILLY
+	fourString with uppercase oneString twice and B, except first
+	four characters = YBILLYB with 7 characters
+
+Name: test2
+Purpose: test the function's ability to deal with an IS where the
+first and second strings are a mixture of capital and lowercase
+letters
+IS contains: BiLlY
+   	     aPpLE
+Expect: oneString: Billy
+	twoString: aPpLE
+	Three String = BiLlYaPpLE
+	Upper case oneString = BILLY
+	fourString with uppercase oneString twice and B, except first
+	four characters = YBILLYB with 7 characters
+
+Name: test3
+Purpose: This test is to see what the program will do when the first
+string in the IS is the fixed string
+IS contains: Hello 
+   	     doggy
+Expect: oneString: Hello
+	twoString: doggy
+	Three String = Hellodoggy
+	oneString equal to fixedString = Hello
+
+Name: test4
+Purpose: tests what the program will do when onestring is less than
+twostring
+IS contains: dog
+   	     happy
+Expect:	oneString: dog
+	twoString: happy
+	Three String = doghappy
+	Four String = dogA
+
+Name: test5
+Purpose: Checks what the member function removefirst will do when the
+number of elements in fourstring is less than 4
+IS contains: d
+   	     
+Expect: Three String = d
+	Upper case oneString = D
+	fourString with uppercase oneString twice and B, except first
+	four characters =  with 0 characters
+
+Name: test6
+Purpose: tests what the program will do when the IS contains non
+alphabetical characters.in this particular test, the first string is
+equal to the second string
+IS Contains: *\s!@#\t^&
+   	     123
+Expect: Three String = *\s!@#\t^&123
+	Upper case oneString = *\s!@#\t^&
+	fourString with uppercase oneString twice and B, except first
+	four characters = *\s!@#\t^&B with 9 characters
+
+Name: test7
+Purpose: tests what the program will do when the IS contains non
+alphabetical characters. in this particular test, the first string is
+less than the second string
+IS Contains: $%
+   	     123
+Expect: Three String = $%123
+	Four String = $%A
