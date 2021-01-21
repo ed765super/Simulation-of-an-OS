@@ -1,0 +1,113 @@
+~~~~~~~~~
+TESTCASES}
+~~~~~~~~~
+unless specified elsewhere:
+memory is set to 100
+stack space is set to 50
+fit type is set to 0(first fit)
+
+Test1
+./simulate
+load prog0
+mem 0 8
+//Tests whether the program's memory 2arg handle is working well
+output:
+0x20000001
+0x21100001
+0x22200001
+
+
+Test2
+./simulate
+load prog0
+step 2
+cpu
+//Tests whether the program's cpu handle is working well
+
+Test3
+./simulate
+load prog0
+mem 2
+//Tests whether the program's step handle is working well & tests mem w/1 arg
+
+Test4
+./simulate
+load prog0
+run
+mem
+cpu
+jobs
+//Tests whether the program's run handle is working well
+
+Test5
+./simulate
+freemem
+//tests freemem and makes sure it can run before load
+output:
+FreeBlocks: [start: 0end: N]
+
+Test6
+{for this particular testcase make the requested memory a large enough number
+that can have all of these programs in it}
+./simulate
+load prog0
+load prog1
+load prog2
+kill 1
+jobs
+//tests jobs & whethe the program can load multiple programs & if it can kill
+//correctly
+output:
+<PCB of prog1>
+<PCB of prog2>
+
+Test7
+{for this particular testcase make the requested memory a large enough number
+that can have all of these programs in it}
+./simulate
+load prog0
+load prog1
+load prog2
+kill 2
+jobs
+//tests jobs & whethe the program can load multiple programs & if it can kill
+//correctly
+output:
+<PCB of prog0>
+<PCB of prog2>
+
+Test8
+{for this particular testcase make the requested memory a large enough number
+that can have all of these programs in it}
+./simulate
+load prog0
+load prog1
+load prog2
+kill 3
+jobs
+//tests jobs & whethe the program can load multiple programs & if it can kill
+//correctly
+output:
+<PCB of prog0>
+<PCB of prog1>
+
+Test9
+{for this particular testcase make the requested memory a large enough number
+that can have all of these programs in it & a little extra that's smaller than
+prog1, but large enough to hold prog2. i.e. 134}
+./simulate
+load prog0
+load prog0
+load prog2
+freemem
+kill 2
+freemem
+load prog2
+freemem
+//tests whether best fit works and if freeBlocks will show fragmented memory
+//also tests the contiguation algorithm I made
+output:
+freeBlocks: [start: 131 end: 134]
+freeBlocks: [start: 0 end: 64][start: 131 end: 134]
+freeBlocks: [start: 0 end: 64]
+
