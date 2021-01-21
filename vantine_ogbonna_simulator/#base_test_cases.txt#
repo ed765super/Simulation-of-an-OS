@@ -1,0 +1,210 @@
+for each of the following cases (excluding 14 & 15) the command line arguement
+will be the number 100
+========================================================================
+TestCase 0:
+
+>load prog0.lce
+>mem -1 1024
+
+purpose: invalid first arg, negative index
+
+output: error
+========================================================================
+TestCase 1:
+
+>load prog0.lce
+>mem 3 6
+
+purpose: catch index not divisible by 4
+
+output: error
+========================================================================
+TestCase 2:
+
+load <invalid file>
+
+purpose: catch invalid file
+
+output: error
+========================================================================
+TestCase 3:
+
+load <file doesn't exist> 
+
+purpose: catch file that doesn't exist
+
+output: error
+========================================================================
+TestCase 4:
+
+>load prog0.lce
+>mem 0 < greater than N>
+
+*N is the number of words in memory
+
+purpose: catch upper bound out of scope
+
+output: error
+========================================================================
+TestCase 5:
+
+>load prog0.lce
+>mem 8 4
+
+purpose: catch first arg greater than second
+
+output: error
+========================================================================
+TestCase 6:
+
+>load prog0.lce
+>mem 0 N
+
+*N is the number of words in memory
+
+purpose: valid mem command
+=======================================================================
+TestCase 8:
+
+>load prog0.lce
+>step <x>
+
+x > N, where N is number of lines in program
+========================================================================
+TestCase 9:
+
+>load prog0.lce
+>step <char>
+
+char is not in the range 0 - 9
+
+output: error
+=======================================================================
+TestCase 10:
+
+>load prog0.lce
+>step <x>
+
+where x < 0
+
+output: error
+========================================================================
+TestCase 11:
+
+> <invalid token>
+
+purpose: Tests whether the program can notice an user input that is not a
+valid command
+
+output: error
+=======================================================================
+TestCase 12a:
+
+>load prog0.lce
+
+prog0.lce =
+-------------------
+ADDI $zero $zero 1
+ADDI $at $at 1
+ADDI $v0 $v0 1
+ADDI $a0 $a0 1
+ADDI $a1 $a1 1
+ADDI $a2 $a2 1
+ADDI $t0 $t0 1
+ADDI $t1 $t1 1
+ADDI $t2 $t2 1
+ADDI $s0 $s0 1
+ADDI $s1 $s1 1
+ADDI $s2 $s2 1
+ADDI $k0 $k0 1
+ADDI $sp $sp 1
+ADDI $fp $fp 1
+ADDI $ra $ra 1
+-------------------
+>step 16
+>cpu 
+$zero = 0
+$at   = 1
+$v0   = 1
+$a0   = 1
+$a1   = 1
+$a2   = 1
+$t0   = 1
+$t1   = 1
+$t2   = 1
+$s0   = 1
+$s1   = 1
+$s2   = 1
+$k0   = 1
+$sp   = 1
+$fp   = 1
+$ra   = 0
+
+Purpose: makes sure step is running fine
+========================================================================
+TestCase 16:
+>load prog1.lce
+>mem
+>step 2
+>cpu
+>jobs
+
+prog1.lce =
+-------------------
+var memory 10
+addi $t1 $t0 10
+la $t2 memory
+take_input: 
+in $a0 
+sw $a0 0x0($t2)
+addi $t2 $t2 8 
+addi $t1 $t1 -1
+bgt $t1 $t0 take_input
+addi $t1 $t0 9 
+la $t2 memory 
+addi $a0 $t2 8
+sort: lw $a1 0x0($t2)
+lw $a2 0x0($a0)
+bgt $a2 $a1 y_greater
+sw $a1 0x0($a0)
+sw $a2 0x0($t2)
+y_greater: addi $t2 $t2 8 
+addi $a0 $a0 8
+addi $t1 $t1 -1
+beq $t1 $t0 done
+beq $t0 $t0 sort
+done: nand $v0 $zero $zero
+halt
+-------------------
+
+purpose: this test case uses every opcode & steps a couple steps & makes
+         sure that the program doesnt pre kill a program before it finishes
+========================================================================
+TestCase 13:
+
+>load prog2.lce
+>run
+>jobs
+
+prog2.lce=
+------------------
+addi $t1 $zero 0
+lw $t0 0x12($t1)
+Purpose: Test that the program can run & removes it from the queue
+========================================================================
+TestCase 14:
+
+./simulate 
+
+expect: "User has given invalid arguments"
+Purpose: Test the program's ability to notice when the user inputs the wrong
+number of arguements
+========================================================================
+
+TestCase 15:
+
+./simulate pizza
+
+expect: "User has given invalid arguments"
+Purpose: Test the program's ability to notice when the user inputs a
+non-integer as a cmdline arg
